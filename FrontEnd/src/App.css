@@ -13,12 +13,13 @@ body{
 
 .sticky_header{
 
-    width: 100px;
+    width: full;
     height: 80px;
     line-height: 80;
     position:sticky;
     top: 0;
     left: 0;
     z-index: 99999;
-    box-shadow: 3px 3px -8px 3px #ddd;
+    background:rgba(255, 255, 255, 0.456);
+    box-shadow: 3px 3px -8px 3px #000000;
 }

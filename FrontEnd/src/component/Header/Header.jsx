@@ -43,6 +43,9 @@ else{
 }}
 )
 }
+useEffect(()=>{handelStickyHeader ()
+return () => window.removeEventListener("scroll", handelStickyHeader)
+})
 
   return (
     <header className="header flex items-center" ref={headerRef}>
