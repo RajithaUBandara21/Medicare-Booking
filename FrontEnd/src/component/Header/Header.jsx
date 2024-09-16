@@ -1,46 +1,65 @@
 import React from 'react'
 import { useEffect,useRef } from 'react'
 import logo from '../../assets/images/logo.png'
-import {BrowserRouter, Link, NavLink} from "react-router-dom"
+import { Link, NavLink} from "react-router-dom"
 import avatar from "../../assets/images/avatar-icon.png"
-import {BiMenu} from 'react-icons/bi'
+import {BiMenu} from "react-icons/bi"
 
 
 
-const navLinks= [{
-  path:"/home",
-  display:"Home"
-},
-{
-  path:"/doctors",
-  display:"Doctors"
-},
-{
-  path:"/services",
-  display:"Services"
-},
-{
-  path:"/contact",
-  display:"Contact"
-}
-]
+
+const navLinks = [
+  {
+    path: "/home",
+    display: "Home",
+  },
+  {
+    path: "/doctors",
+    display: "Doctors",
+  },
+  {
+    path: "/services",
+    display: "Services",
+  },
+  {
+    path: "/contact",
+    display: "Contact",
+  },
+];
 const  Header = ()=> {
+const headerRef= useRef(null);
+const menuRef= useRef(null);
+
+
+const toggleMenu = ()=>{menuRef.current.classList.toggle("show_menu")};
+
+const handelStickyHeader = ()=>{
+  window.addEventListener("scroll", ()=>{
+    if(document.body.scrollTop > 80 || document.documentElement.scrollTop > 80){
+      headerRef.current.classList.add("sticky_header")
+  }
+else{
+  headerRef.current.classList.remove("sticky_header")
+}}
+)
+}
+
   return (
-    <header className="header flex items-center">
+    <header className="header flex items-center" ref={headerRef}>
       <div className="container">
         <div className="flex items-center justify-between">
           <div>
-            {/* :::::::::::::::Logo:::::::::::::::::::: */}
+{/* :::::::::::::::Logo:::::::::::::::::::: */}
             <img src={logo} alt="" />
           </div>
 
-          {/* :::::::::::::Navigation::::::::::::: */}
+{/* :::::::::::::Navigation::::::::::::: */}
 
-          <div className="navigation">
+          <div className="navigation" ref={menuRef} onClick={toggleMenu}>
             <ul className="menu flex items-center gap-[2.7rem]">
               {navLinks.map((item, index) => (
                 <li key={index}>
-                  <BrowserRouter>
+                  
                     <NavLink
                       to={item.path}
                       className={(navClass) =>
@@ -51,27 +70,32 @@ const  Header = ()=> {
                     >
                       {item.display}
                     </NavLink>
-                  </BrowserRouter>
+                  
                 </li>
               ))}
             </ul>
           </div>
           
-
+{/* ::::::::::::::::::: Nav_Right ::::::::::::::::::: */}
+ 
           <div className='flex items-center gap-4'>
-            <div>
-            <BrowserRouter> <Link to='/'>
-            <figure className='w-[35px] h-[35px] rounded-full cursor-pointer'>
+            <div className='hidden'>
+              <Link to='/'>
+             <figure className='w-[35px] h-[35px] rounded-full cursor-pointer'>
               <img src = {avatar} className='w-full rounded-full alt="" '/>
-              
+               </figure></Link> </div>
+
+               <Link to='/login'>
+               <button className='bg-primaryColor py-2 px-6 text-white font-[600] h-[44px] rounded-[50px] flex items-center justify-center '>Login</button>
+               </Link>
 
 
-              </figure></Link> </BrowserRouter>
-              <span className="w-6 h-6 cursor-pointer">
+              <span className="w-6 h-6 cursor-pointer md:hidden" onClick={toggleMenu}>
                 <BiMenu className= "w-6 h-6 cursor-pointer" />
               </span>
               
-              </div></div>
+              </div>
+            
         </div>
       </div>
     </header>
