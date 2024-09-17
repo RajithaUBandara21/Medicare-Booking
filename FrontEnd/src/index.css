@@ -5,7 +5,7 @@
 
 @layer base {
     section{
-        @apply py-[75px]
+        @apply py-[75px]  
     }}
 
     @layer components{
