@@ -297,7 +297,7 @@ const Home = () => {
 
           {/* ::::::::::test imoinal:::::::::::::::: */}
 
-          {/* Not Working pl check */}
+       
           <section>
             <div className="container">
             <div className="lg:w-[470px] mx-auto">
