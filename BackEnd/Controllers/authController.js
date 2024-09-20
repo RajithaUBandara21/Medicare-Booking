@@ -16,10 +16,14 @@ export const register = async (req, res) => {
   try {
     let user = null;
 
+    console.log(role);
+
     if (role === "patient") {
       user =  await User.findOne({ email });
     } else if (role === "doctor") {
+     
       user =  await Doctor.findOne({ email });
+   
     }
 
     // check user exists
@@ -31,6 +35,7 @@ export const register = async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
+console.log(hashedPassword);
 
     if (role === "patient") {
       user = new User({
@@ -43,16 +48,14 @@ export const register = async (req, res) => {
       });
     }
 
-    if (role === "Doctor") {
+    if (role === "doctor") {
       user = new Doctor({
-        name,
-        email,
-        password: hashedPassword,
-        photo,
-        gender,
-        role,
+        email, password: hashedPassword, name, role, photo, gender
       });
+
+     
     }
+     console.log(user);
 
     await user.save();
     res.status(200).json({success:true, msg: "User is registered" });
@@ -61,6 +64,9 @@ export const register = async (req, res) => {
     res.status(500).json({ msg: "user register error" , success:false});
   }
 };
+
+
+
   export const login = async (req, res) => {
     const { email } = req.body;
     try {
