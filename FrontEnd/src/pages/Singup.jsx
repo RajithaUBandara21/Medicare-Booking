@@ -3,9 +3,10 @@ import signupImg from '../assets/images/signup.gif'
 import avatar from '../assets/images/avatar-icon.png'
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import uploadImageToCloudinary from '../utils/uploadCloudinary'
 
 
-const Singup = () => {
+const Signup = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewURL, setPreviewURL] = useState("");
 
@@ -13,7 +14,7 @@ const Singup = () => {
     name: "",
     email: "",
     password: "",
-    photo: "selectedFile",
+    photo: selectedFile,
     gender: "",
     role: "patient",
   });
@@ -21,12 +22,17 @@ const Singup = () => {
   const handeleInputChange = e => {
     setFromData({...FormData,[e.target.name]:e.target.value});
   };
-const handeleFileInputChange = e => {
+const handeleFileInputChange = async  (event) => {
   const file = event.target.files[0];
-  console.log(file);
+
+  const data = await uploadImageToCloudinary(file);
+  console.log(data);
 };
 
+
+
 const submitHandler = async event=>{
+  console.log(FormData);
   event.preventDefault();
 
 }
@@ -133,7 +139,7 @@ const submitHandler = async event=>{
                       name="photo"
                       id="customFile"
                       onChange={handeleFileInputChange}
-                      accept=".jpg,.jpeg,.png"
+                      accept=".jpg,.png"
                       className="absolute top-0 left-0 opacity-0  w-full h-full cursor-pointe"
                     />
                     <label
@@ -165,4 +171,4 @@ const submitHandler = async event=>{
   );
 }
 
-export default Singup
+export default Signup
