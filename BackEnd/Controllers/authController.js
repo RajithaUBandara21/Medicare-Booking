@@ -35,7 +35,6 @@ export const register = async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-console.log(hashedPassword);
 
     if (role === "patient") {
       user = new User({
@@ -55,10 +54,17 @@ console.log(hashedPassword);
 
      
     }
-     console.log(user);
 
-    await user.save();
+  
+    console.log('before save');
+    let saveUser = await user.save(); //when fail its goes to catch
+    console.log(saveUser); //when success it print.
+    console.log('after save');
+    console.log(user);
+   
     res.status(200).json({success:true, msg: "User is registered" });
+
+
 
   } catch (err) {
     res.status(500).json({ msg: "user register error" , success:false});
