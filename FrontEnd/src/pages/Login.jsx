@@ -2,7 +2,7 @@ import { useState,useContext } from 'react'
 import { Link ,useNavigate} from 'react-router-dom';
 import { BASE_URL } from '../config';
 import { toast } from 'react-toastify';
-import {authContext} from '../context/AuthContext'
+import {authContext} from '../context/AuthContext.jsx'
 
 const Login = () => {
   const [fromData,setFromData] = useState({
@@ -15,8 +15,10 @@ const Login = () => {
   const navigate = useNavigate();
   const {dispatch} = useContext(authContext)
 
-  const handeleInputChange = e => {
-    setFromData({...FormData,[e.target.name]:e.target.value});
+  const handeleInputChange =async  e => {
+
+
+  await  setFromData({...fromData,[e.target.name]:e.target.value});
   };
 
 
@@ -26,7 +28,7 @@ const Login = () => {
     setLoading(true);
   
     try{
-      const res = await  fetch(`${BASE_URL}/auth/login`,
+      const res = await  fetch("http://localhost:5000/api/v1/auth/login",
       {
         method:'post',
         headers:{
@@ -47,7 +49,7 @@ const Login = () => {
     dispatch(
       {
         type:"LOGIN_SUCCESS",
-        playload:{
+        payload:{
           user:result.user,
           token:result.token,
           role:result.role,
@@ -79,7 +81,7 @@ const Login = () => {
               type="email"
               placeholder="Enter your email"
               name="email"
-              value={FormData.email}
+              value={fromData.email}
               onChange={handeleInputChange}
               className="w-full px-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none
           focus:border-b-primaryColor text-[22px] focus:shadow-xl leading-7 text-headingColor placeholder:text-textColor round-md cursor-pointer"
@@ -92,7 +94,7 @@ const Login = () => {
               type="password"
               placeholder="Password"
               name="password"
-              value={FormData.password}
+              value={fromData.password}
               onChange={handeleInputChange}
               className="w-full px-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none
           focus:border-b-primaryColor focus:shadow-xl  text-[22px] leading-7 text-headingColor placeholder:text-textColor round-md cursor-pointer"

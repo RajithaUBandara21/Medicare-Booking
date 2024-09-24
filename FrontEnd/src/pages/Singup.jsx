@@ -65,7 +65,8 @@ const submitHandler = async event=>{
   }
 
   setLoading(false);
-  toast.success(message)
+  toast.success("User is registered")
+
   navigate('/login')
 
 

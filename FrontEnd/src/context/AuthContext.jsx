@@ -1,4 +1,4 @@
-import { createContext, useContext,useReducer } from "react";
+import { createContext,useEffect, useContext,useReducer } from "react";
 
 const initialState = {
     user:null,
@@ -25,9 +25,9 @@ const initialState = {
 
                 case "LOGIN_SUCCESS":
                 return {
-                  user: action.playload.user,
-                  token: action.playload.token,
-                  role: action.playload.role,
+                  user: action.payload.user,
+                  token: action.payload.token,
+                  role: action.payload.role,
                 };
 
                 case 'LOGOUT':
@@ -46,13 +46,13 @@ const initialState = {
 
 
 
-export const AuthContextProvider = ({Children}) =>{
+export const AuthContextProvider = ({children}) =>{
     const [state,dispatch] = useReducer(authRediucer,initialState)
     return (
       <authContext.Provider
         value={{ user: state, token: state.token, role: state.role, dispatch }}
       >
-        {Children}
+        {children}
       </authContext.Provider >
     );
 }
