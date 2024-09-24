@@ -55,12 +55,12 @@ export const register = async (req, res) => {
      
     }
 
-  
+    console.log(user);
     console.log('before save');
     let saveUser = await user.save(); //when fail its goes to catch
     console.log(saveUser); //when success it print.
     console.log('after save');
-    console.log(user);
+   
    
     res.status(200).json({success:true, msg: "User is registered" });
 

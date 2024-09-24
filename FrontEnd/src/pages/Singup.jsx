@@ -15,13 +15,14 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
 
   const [fromData, setFromData] = useState({
-    name: "",
     email: "",
+    name: "",
     password: "",
-    photo: selectedFile,
-    gender: "",
     role: "patient",
+    photo: "",
+    gender: "male",
   });
+  
 
  const navigate = useNavigate();
 
@@ -32,7 +33,7 @@ const handeleFileInputChange = async (event) => {
   const file = event.target.files[0]; 
 
   const data = await uploadImageToCloudinary(file);
-setPreviewURL(data.url)
+setPreviewURL( "url", data.url)
   setSelectedFile(data.url);
   setFromData({...fromData,photo:data.url})
 
@@ -49,14 +50,13 @@ const submitHandler = async event=>{
   try{
     console.log( "base", BASE_URL)
     console.log( "data",fromData )
-    const res = await  fetch(`${BASE_URL}/auth/register`,
-    {
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json'
+    const res = await fetch(`${BASE_URL}/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-      body:JSON.stringify(fromData)
-  })
+      body: JSON.stringify(fromData),
+    });
 
   const {message} = await res.json();
 
@@ -138,7 +138,7 @@ const submitHandler = async event=>{
                   >
                     Are you a:
                     <select
-                      name="roll"
+                      name="role"
                       value={fromData.role}
                       onChange={handeleInputChange}
                       className="text-textColor font-semibold text-[15px] leading-7 px-4 py-3 focus:outline-none"
