@@ -1,4 +1,3 @@
-import React from 'react'
 
 import Home from "../pages/Home"
 import Services from "../pages/Services"
@@ -8,6 +7,8 @@ import Contact from "../pages/Contact"
 import Doctors from "../pages/Doctors/Doctors"
 import DoctorsDetails from "../pages/Doctors/DoctorDetails"
 import {Routes, Route} from "react-router-dom"
+import MyAccount from '../Dashbord/user-account/MyAccount'
+import Dashbord from '../Dashbord/doctor-account/Dashbord'
 
 function Routers() {
   return (
@@ -21,6 +22,9 @@ function Routers() {
     <Route path="/register" element={<Singup/>}/>
     <Route path="/contact" element={<Contact/>}/>
     <Route path="/services" element={<Services/>}/>
+    <Route path="/users/profile/me" element={<MyAccount/>}/>
+    <Route path="/doctors/profile/me" element={<Dashbord/>}/>
+  
     </Routes>
      )
 }
