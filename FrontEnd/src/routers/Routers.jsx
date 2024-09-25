@@ -9,6 +9,7 @@ import DoctorsDetails from "../pages/Doctors/DoctorDetails"
 import {Routes, Route} from "react-router-dom"
 import MyAccount from '../Dashbord/user-account/MyAccount'
 import Dashbord from '../Dashbord/doctor-account/Dashbord'
+import ProtectiveRoute from './ProtectiveRoute'
 
 function Routers() {
   return (
@@ -22,8 +23,8 @@ function Routers() {
     <Route path="/register" element={<Singup/>}/>
     <Route path="/contact" element={<Contact/>}/>
     <Route path="/services" element={<Services/>}/>
-    <Route path="/users/profile/me" element={<MyAccount/>}/>
-    <Route path="/doctors/profile/me" element={<Dashbord/>}/>
+    <Route path="/users/profile/me" element={ <ProtectiveRoute allowedRoles={["patient"]}><MyAccount/></ProtectiveRoute>}/>
+    <Route path="/doctors/profile/me" element={<ProtectiveRoute allowedRoles = {["doctor"]}><Dashbord/> </ProtectiveRoute>}/>
   
     </Routes>
      )
