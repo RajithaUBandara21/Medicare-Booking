@@ -49,7 +49,7 @@ export const restrict = roles => async (req, res, next) => {
   if (doctor) {
     user = doctor;
   }
-  if(!roles.includes(user.role)){
+  if(!roles.includes(req.role)){
     return res.status(403).json({ success: false, msg: "You are not authorized to access this route" });
   }
 

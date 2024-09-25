@@ -1,5 +1,5 @@
 import User from "../models/UserSchema.js"
-import booking from "../models/bookingSchema.js"
+import Booking from "../models/bookingSchema.js"
 import Doctors from "../models/DoctorSchema.js"
 
 export const UpdateUser = async (req, res) => {
@@ -79,15 +79,17 @@ export const deleteUser = async (req, res) => {
 
   export const  getUserProfile = async (req, res) => {
     const userId = req.userId;
+    console.log("id" , userId);
 
     try {
       const user = await User.findById(userId);
 
       if (!user) {
         return res.status(404).json({ message: "User not found" });
+        
       }
       const { password, ...others } = user._doc;
-      res.status(200).json({ success: false , message:" profile info is geting" ,data: {... others} });
+      res.status(200).json({ success: true , message:"Profile info is getting" ,data: {...others} });
     }
     catch (error) {
       res.status(500).json({ success: false, message: error.message });
@@ -96,14 +98,23 @@ export const deleteUser = async (req, res) => {
 
   export const getMyAppointments = async (req, res) => {
     try {
-      const booking = await booking.find({user: req.userId})
+      console.log( "this" ,req.userId)
+      const booking = await Booking.find({user: req.userId})
+
+
 
       const doctorIds = booking.map((book) => book.doctor.id)
-
-      const doctors = await Doctors.find({_id: {$in: doctorIds}}).select("-password")
-
-      res.status(200).json({success: true, message: "Appointments are getting", data: doctors})
+    
+      const doctors = await Doctors.find({_id: {$in: doctorIds}}).select("-password") 
+     
+     await res.status(200).json({success: true, message: "Appointments are getting", data: doctors})
+    return
+ 
+      
     } catch (error) {
       res.status(500).json({ success: false, message: error.message });
     }
   }
+
+  
+  
