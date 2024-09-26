@@ -50,7 +50,7 @@ reviewSchema.pre(/^find/, function (next) {
         },
       },
     ]);
-    console.log(stats);
+
 
     await Doctor.findByIdAndUpdate(doctorId, {
       totalRating:status[0].numOfRating,

@@ -24,7 +24,7 @@ const Login = () => {
 
 
   const submitHandler = async event=>{
-    console.log(fromData);
+  
     event.preventDefault();
     setLoading(true);
   
@@ -58,7 +58,7 @@ const Login = () => {
       }
     )
 
-    console.log(result,"Login Data")
+  
   
     setLoading(false);
     toast.success(result.message)

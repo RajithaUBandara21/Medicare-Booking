@@ -16,7 +16,7 @@ export const register = async (req, res) => {
   try {
     let user = null;
 
-    console.log(role);
+
 
     if (role === "patient") {
       user =  await User.findOne({ email });
@@ -55,11 +55,11 @@ export const register = async (req, res) => {
      
     }
 
-    console.log(user);
-    console.log('before save');
+
+
     let saveUser = await user.save(); //when fail its goes to catch
-    console.log(saveUser); //when success it print.
-    console.log('after save');
+    
+
    
    
     res.status(200).json({success:true, msg: "User is registered" });

@@ -37,7 +37,7 @@ setPreviewURL( "url", data.url)
   setSelectedFile(data.url);
   setFromData({...fromData,photo:data.url})
 
-  console.log(data.url);
+
 };
 
 
@@ -48,8 +48,7 @@ const submitHandler = async event=>{
   setLoading(true);
 
   try{
-    console.log( "base", BASE_URL)
-    console.log( "data",fromData )
+
     const res = await fetch(`${BASE_URL}/auth/register`, {
       method: "POST",
       headers: {
@@ -198,11 +197,15 @@ const submitHandler = async event=>{
 
                 <div className="mt-7">
                   <button
-                  disabled= {loading && true }
+                    disabled={loading && true}
                     type="submit"
                     className="w-full bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-4 py-3 cursor-pointer"
                   >
-                    {loading ? <HashLoader size={35} color="#fff" /> : "Sign Up"}
+                    {loading ? (
+                      <HashLoader size={35} color="#fff" />
+                    ) : (
+                      "Sign Up"
+                    )}
                   </button>
                 </div>
                 <p className="mt-5 text-textColor text-center">

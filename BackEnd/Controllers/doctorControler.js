@@ -86,7 +86,7 @@ export const deleteDoctor = async (req, res) => {
  
         }
 
-        console.log(doctors);  
+    
       res.status(200).json({
         success: true,
         message: "Doctor found d",
@@ -99,14 +99,17 @@ export const deleteDoctor = async (req, res) => {
 
   export const getDoctorProfile = async (req, res) => {
 
-    const doctorId = req.doctorId;
+    const doctorId = req.userId;
+
+    console.log("id" ,doctorId);
+
     try {
       const doctor = await Doctor.findById(doctorId);
 
       if (!doctor) {
         return res.status(404).json({ message: "Doctor not found" });
       }
-      const { password, ...others } = user._doc;
+      const { password, ...others } = doctor._doc;
       const appointments = await Booking.find({ doctor: doctorId });
       res
         .status(200)
@@ -115,6 +118,7 @@ export const deleteDoctor = async (req, res) => {
           message: " profile info is geting",
           data: { ...others ,appointments},
         });
+      
     } catch (error) {
       res.status(500).json({ success: false, message: error.message });
     }}

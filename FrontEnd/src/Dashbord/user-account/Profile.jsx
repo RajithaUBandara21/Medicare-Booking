@@ -18,7 +18,7 @@ const Profile = ( {user}) => {
     email: "",
     name: "",
     password: "",
-    bloodType:"",
+    bloodType: "",
     photo: null,
     gender: "male",
   });
@@ -41,7 +41,6 @@ const handeleFileInputChange = async (event) => {
   setSelectedFile(data.url);
   setFromData({...fromData,photo:data.url})
 
-  console.log(data.url);
 };
 
 
@@ -52,8 +51,7 @@ const submitHandler = async event=>{
   setLoading(true);
 
   try{
-    console.log( "base", BASE_URL)
-    console.log( "data",fromData )
+
     const res = await fetch(`${BASE_URL}/users/${user._id}`, {
       method: "PUT",
       headers: {

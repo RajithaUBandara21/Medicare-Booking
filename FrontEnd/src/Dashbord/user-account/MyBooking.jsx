@@ -13,7 +13,7 @@ const MyBooking =  () => {
     error,
   } =   useFetchData(`http://localhost:5000/api/v1/users/appointments/my-appointments`);
 
-  console.log("appointment",appointments)
+
 
   return (
     <div>

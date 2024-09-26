@@ -5,6 +5,8 @@ import { Link, NavLink} from "react-router-dom"
 
 import {BiMenu} from "react-icons/bi"
 import {authContext} from '../../context/AuthContext'
+import useFetchData from '../../hooks/useFetchData.jsx'
+import { BASE_URL } from '../../config'
 
 
 
@@ -30,10 +32,18 @@ const navLinks = [
 const  Header = ()=> {
 
 
+
+  const {
+    data: userData,
+    loading,
+    error,
+  } =  useFetchData(`${BASE_URL}/users/profile/me`);
+
   
 const headerRef= useRef(null);
 const menuRef= useRef(null);
 const {user,role,token} = useContext(authContext);
+
 
 
 const toggleMenu = ()=>{menuRef.current.classList.toggle("show_menu")};
@@ -89,7 +99,7 @@ return () => window.removeEventListener("scroll", handelStickyHeader)
               <div >
                 <Link to={`${role === 'doctor' ? "/doctors/profile/me" : "/users/profile/me"}`}>
                   <figure className="w-[35px] h-[35px] rounded-full cursor-pointer">
-                    <img  className='w-full rounded-full alt="" ' />
+                    <img src ={userData.photo  }  alt='profile' className='w-full rounded-full alt="" ' />
                   </figure>
                  
                 </Link>{" "}

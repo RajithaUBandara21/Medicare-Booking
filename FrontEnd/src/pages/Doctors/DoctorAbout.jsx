@@ -2,7 +2,7 @@ import React from 'react'
 import { formateDate } from '../../utils/formateDate';
 import SidePanel from './SidePanel';
 
-const DoctorAbout = () => {
+const DoctorAbout = (name,about,qualifications,experience ) => {
   return (
     <div className=" ">
       
