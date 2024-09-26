@@ -40,7 +40,7 @@
 
     @media only screen and (max-width:1024px){
         .container{
-            @apply w-full;
+            @apply w-full ;
         }
 
         section {
@@ -77,7 +77,7 @@
     top: 0;
     right: 0;
     background: #fff;
-    z-index: 200;
+    z-index: 100;
     flex-direction: column;
     justify-content: center;
     align-items: center;

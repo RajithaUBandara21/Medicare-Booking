@@ -38,7 +38,7 @@ const MyAccount = () => {
   <div className="flex item-center justify-center">
     <figure className="w-[100px] h-[100px] rounded-full border-2 border-solid border-primaryColor">
       <img
-        src={userImg}
+        src={userData.photo || userImg}
         alt="user"
         className="w-full h-full rounded-full"
       />
@@ -46,16 +46,16 @@ const MyAccount = () => {
   </div>
   <div className="text-center mt-4">
     <h3 className="text-[18px] leading-[30px] text-headingColor font-bold">
-      Rajitha Bandara
+   {userData.name}
     </h3>
     <p className="text-textColor text-[15px] leading-6 font-medium">
-      rajithaubandara@gmail.com
+    {userData.email}
     </p>
 
     <p className="text-textColor text-[15px] leading-6 font-medium">
       Blood Type :{" "}
       <span className="ml-2 text-headingColor text-[22px] leading-8">
-        O-
+       {userData.bloodType}
       </span>
     </p>
   </div>
@@ -94,7 +94,7 @@ const MyAccount = () => {
   </div>
 
    {tab === "bookings" && <MyBooking />}
-  {tab === "settings" && <Profile />}
+  {tab === "settings" && <Profile user={userData} />}
 </div>
 </div>
        )}

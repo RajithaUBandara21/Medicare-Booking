@@ -97,9 +97,12 @@ export const deleteUser = async (req, res) => {
   }
 
   export const getMyAppointments = async (req, res) => {
+    const userId = req.userId;
+    console.log("ixxxxxxxxxxxxxxxxxd" , userId);
+
     try {
       console.log( "this" ,req.userId)
-      const booking = await Booking.find({user: req.userId})
+      const booking = await  Booking.find({user: userId})
 
 
 
@@ -108,7 +111,7 @@ export const deleteUser = async (req, res) => {
       const doctors = await Doctors.find({_id: {$in: doctorIds}}).select("-password") 
      
      await res.status(200).json({success: true, message: "Appointments are getting", data: doctors})
-    return
+ 
  
       
     } catch (error) {
@@ -116,5 +119,5 @@ export const deleteUser = async (req, res) => {
     }
   }
 
-  
-  
+
+ 
