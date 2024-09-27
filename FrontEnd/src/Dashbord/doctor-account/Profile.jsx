@@ -1,38 +1,195 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {AiOutlineDelete} from "react-icons/ai";
+import uploadImageToCloudinary from "./../../utils/uploadCloudinary.js";
+import {BASE_URL , token} from "./../../config.js";
+import {toast} from   "react-toastify";
 
 
-const Profile = () => {
-    const [formData, setFormData] = useState({
-      name: "",
-      email: "",
-      phone: "",
-      bio: "",
-      gender: "",
-      specialization: "",
-      ticketPrice: 0,
-      qualifications: [
-        { startingDate: "", endingDate: "", degree: "", university: "" },
-      ],
+const Profile = ( doctorData) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+    bio: "",
+    gender: "",
+    specialization: "",
+    ticketPrice: 0,
+    qualifications: [],
 
-      experience: [
-        { startingDate: "", endingDate: "", position: "", hospital: "" },
-      ],
-      timeSlots: [{ day: "", startingTime: "", endingTime: "" }],
-      about: "",
-      photo:null,
-    });
+    experience: [],
+    timeSlots: [],
+    about: "",
+    photo: null,
+  });
+
+  useEffect(() => {
+  setFormData({
+    name: doctorData.name,
+    email: doctorData.email,
+    phone:  doctorData.phone,
+    password:   doctorData.password,
+    bio:  doctorData.bio,
+    gender:   doctorData.gender,
+    specialization: doctorData.specialization,
+    ticketPrice:  doctorData.ticketPrice,
+    qualifications:   doctorData.qualifications,
+
+    experience:   doctorData.experience,
+    timeSlots:  doctorData.timeSlots,
+    about:  doctorData.about,
+    photo:  doctorData.photo,
 
 
-    const handelFileInputChange = (e) => {
 
+  });  
+  
+  }, [doctorData]
+  )
 
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handelFileInputChange = async (e) => {
+
+    const file = e.target.files[0];
+    const data = await uploadImageToCloudinary(file);
+
+    setFormData({ ...formData,photo: data?.url})
+
+console.log(data);    
+
+  };
+
+  const updateProfileHandeler = async (e) => {
+    e.preventDefault();
+
+    try{
+      const res = await fetch (` ${BASE_URL}/doctors/${doctorData._id}` , {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+
+      });
+
+      const result = await res.json();
+      if(!res.ok)
+      {
+        throw new Error(result.message);  
+      }
+      toast.success("Profile Updated Successfully");
+
+    }catch (err){
+      toast.error(err.message);
     }
-        const handleInputChange = (e) => {
-            setFormData({... formData,[e.target.name]: e.target.value});
 
 
-        }
+  };
+
+  // reuseable function to add item in array
+  const addItem = (key, item) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [key]: [...prevFormData[key], item],
+    }));
+  };
+  // reusable input change function
+  const handleReusableChangeFunc = (key, event, index) => {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => {
+      const updateItems = [...prevFormData[key]];
+      updateItems[index][name] = value;
+      return {
+        ...prevFormData,
+        [key]: updateItems,
+      };
+    });
+  };
+
+// reusable function to delete item from array
+const deleteItem = (key,index)=>
+{
+  setFormData(prevFormData => ({
+    ... prevFormData,
+    [key]:prevFormData[key].filter((_, i)=> i !== index)
+  }))
+}
+
+
+
+
+  const addQualification = (e) => {
+    e.preventDefault();
+
+    addItem("qualifications", {
+      startingDate: "",
+      endingDate: "",
+      degree: "",
+      university: "",
+    });
+  };
+
+  const handelQualificationChange = (event, index) => {
+    handleReusableChangeFunc("qualifications", event, index);
+  };
+
+  const deleteQualification = (e, index) => {
+    e.preventDefault();
+    deleteItem("qualification", index);
+  };
+
+
+
+
+  const addExperience = (e) => {
+    e.preventDefault();
+
+    addItem("experience", {
+      startingDate: "",
+      endingDate: "",
+      position: "",
+      hospital: "",
+    });
+  };
+
+  const handelExperienceChange = (event, index) => {
+    handleReusableChangeFunc("experience", event, index);
+  };
+
+  const deleteExperience = (e, index) => {
+    e.preventDefault();
+    deleteItem("experience", index);
+  };
+
+
+
+
+
+  const addTimeSlot = (e) => {
+    e.preventDefault();
+
+    addItem("timeSlot", {
+      day: "",
+      startingTime: "",
+      endingTime: "",
+    });
+  };
+
+  const handelTimeSlotChange = (event, index) => {
+    handleReusableChangeFunc("timeSlot", event, index);
+  };
+
+  const deleteTimeSlot = (e, index) => {
+    e.preventDefault();
+    deleteItem("timeSlot", index);
+  };
+
+
+
   return (
     <div>
       <h2 className="text-headingColor font-bold text-[24px] leading-9 mb-10">
@@ -159,6 +316,7 @@ const Profile = () => {
                         name="startingDate"
                         value={item.startingDate}
                         className="form_input"
+                        onChange={(e) => handelQualificationChange(e, index)}
                       />
                     </div>
 
@@ -169,6 +327,7 @@ const Profile = () => {
                         name="endingDate"
                         value={item.endingDate}
                         className="form_input"
+                        onChange={(e) => handelQualificationChange(e, index)}
                       />
                     </div>
                   </div>
@@ -182,6 +341,7 @@ const Profile = () => {
                         name="degree"
                         value={item.degree}
                         className="form_input"
+                        onChange={(e) => handelQualificationChange(e, index)}
                       />
                     </div>
 
@@ -192,11 +352,12 @@ const Profile = () => {
                         name="university"
                         value={item.university}
                         className="form_input"
+                        onChange={(e) => handelQualificationChange(e, index)}
                       />
                     </div>
                   </div>
 
-                  <button className="bg-red-600 p-2 rounded-full text-white text-[18px] mt-2 mb-[30px] cursor-pointer">
+                  <button  onClick={e => deleteQualification(e ,index)} className="bg-red-600 p-2 rounded-full text-white text-[18px] mt-2 mb-[30px] cursor-pointer">
                     <AiOutlineDelete />
                   </button>
                 </div>
@@ -222,6 +383,7 @@ const Profile = () => {
                         name="startingDate"
                         value={item.startingDate}
                         className="form_input"
+                        onChange={(e) => handelExperienceChange(e, index)}
                       />
                     </div>
 
@@ -232,6 +394,7 @@ const Profile = () => {
                         name="endingDate"
                         value={item.endingDate}
                         className="form_input"
+                        onChange={(e) => handelExperienceChange(e, index)}
                       />
                     </div>
                   </div>
@@ -243,6 +406,7 @@ const Profile = () => {
                         name="position"
                         value={item.degree}
                         className="form_input"
+                        onChange={(e) => handelExperienceChange(e, index)}
                       />
                     </div>
 
@@ -253,16 +417,33 @@ const Profile = () => {
                         name="hospital"
                         value={item.university}
                         className="form_input"
+                        onChange={(e) => handelExperienceChange(e, index)}
                       />
                     </div>
                   </div>
-                  <button className="bg-red-600 p-2 rounded-full text-white text-[18px] mt-2 mb-[30px] cursor-pointer">
+                  <button onClick = {e => deleteExperience(e,index)} className="bg-red-600 p-2 rounded-full text-white text-[18px] mt-2 mb-[30px] cursor-pointer">
                     <AiOutlineDelete />
                   </button>
                 </div>
               </div>
             ))}
-            <button className="bg-[#000] py-2 px-2 rounded text-white h-fit cursor-pointer">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <button onClick={addExperience} className="bg-[#000] py-2 px-2 rounded text-white h-fit cursor-pointer">
               Add Experience
             </button>
           </div>
@@ -278,8 +459,8 @@ const Profile = () => {
                       <select
                         name="day"
                         value={item.day}
-                        onChange={handleInputChange}
                         className="form_input py-3.5"
+                        onChange = {e => handelTimeSlotChange(e,index)}
                       >
                         <option value="">Select</option>
                         <option value="saturDay">Select</option>
@@ -299,6 +480,7 @@ const Profile = () => {
                         name="startingTime"
                         value={item.startingTime}
                         className="form_input"
+                        onChange = {e => handelTimeSlotChange(e,index)}
                       />
                     </div>
 
@@ -309,12 +491,13 @@ const Profile = () => {
                         name="endingTime"
                         value={item.endingTime}
                         className="form_input"
+                        onChange = {e => handelTimeSlotChange(e,index)}
                       />
                     </div>
 
                     {/* deleat button */}
                     <div className="flex items-center">
-                      <button className="bg-red-600 p-2 rounded-full text-white text-[18px] mt-10 mb-[30px] cursor-pointer">
+                      <button   onClick = {e => deleteTimeSlot(e,index)}  className="bg-red-600 p-2 rounded-full text-white text-[18px] mt-10 mb-[30px] cursor-pointer">
                         <AiOutlineDelete />
                       </button>
                     </div>
@@ -322,7 +505,7 @@ const Profile = () => {
                 </div>
               </div>
             ))}
-            <button className="bg-[#000] py-2 px-2 rounded text-white h-fit cursor-pointer">
+            <button onClick={addTimeSlot} className="bg-[#000] py-2 px-2 rounded text-white h-fit cursor-pointer">
               Add Time Slot
             </button>
           </div>
@@ -367,14 +550,19 @@ const Profile = () => {
               </label>
             </div>
           </div>
-<div className>
-
-    </div>
-          
+          <div className="mt-7">
+            <button
+              type="submit"
+              onClick={updateProfileHandeler}
+              className="bg-primaryColor text-white text-[18px] leading-[30px] w-full py-3 px-4  rounded-lg"
+            >
+              Update Profile
+            </button>
+          </div>
         </div>
       </form>
     </div>
   );
-}
+};
 
-export default Profile
+export default Profile;
