@@ -17,7 +17,7 @@ const Tabs = ({tab,SetTab}) => {
     navigate("/");
   }
 
-console.log(tab,)
+
   return (
     <div>
       <span className="lg:hidden">

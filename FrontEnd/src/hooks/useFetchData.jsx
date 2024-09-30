@@ -22,11 +22,13 @@ useEffect(() => {
         const result = await res.json()
 
         if(!res.ok){
-            return toast.error(result.message,"🤷‍♂️")
+           
+            return toast.error(result.message," Data fetching error🤷‍♂️")
 
 
         }
     setData(result.data)
+
     setLoading(false)
     
     }catch(err){
@@ -39,12 +41,14 @@ useEffect(() => {
       
    },[url])
 
-   
+   console.log("data",data)
 
   return (
     
 {data,loading,error}
   )
+
+
 }
 
 export default useFetchData

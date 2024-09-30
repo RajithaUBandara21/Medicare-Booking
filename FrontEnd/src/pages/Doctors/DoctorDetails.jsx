@@ -8,6 +8,7 @@ import useFetchData from "./../../hooks/useFetchData"
 import Loader from "../../component/Loader/Loading"
 import Error from "../../component/Error/Error"
 import { useParams } from 'react-router-dom'
+import { useEffect } from 'react'
 
 const DoctorDetails = () => {
 
@@ -23,7 +24,8 @@ const DoctorDetails = () => {
 
   const {
     name,
-    qualification,
+
+    qualifications,
     experience,
     timeSlot,
     reviews,
@@ -112,7 +114,7 @@ const DoctorDetails = () => {
                     <DoctorAbout
                       name={name}
                       about={about}
-                      qualifications={qualification}
+                      qualifications={qualifications}
                       experience={experience}
                     />
                   )}

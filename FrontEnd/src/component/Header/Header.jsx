@@ -29,6 +29,10 @@ const navLinks = [
     display: "Contact",
   },
 ];
+
+const type = localStorage.getItem('role');
+
+
 const  Header = ()=> {
 
 
@@ -37,7 +41,9 @@ const  Header = ()=> {
     data: userData,
     loading,
     error,
-  } =  useFetchData(`${BASE_URL}/users/profile/me`);
+  } =  useFetchData(`${BASE_URL}/${type}s/profile/me`);
+
+  // console.log(userData)
 
   
 const headerRef= useRef(null);
@@ -99,7 +105,7 @@ return () => window.removeEventListener("scroll", handelStickyHeader)
               <div >
                 <Link to={`${role === 'doctor' ? "/doctors/profile/me" : "/users/profile/me"}`}>
                   <figure className="w-[35px] h-[35px] rounded-full cursor-pointer">
-                    <img src ={userData.photo  }  alt='profile' className='w-full rounded-full alt="" ' />
+                    <img src ={userData.photo  }  alt='' className='w-full rounded-full alt="" ' />
                   </figure>
                  
                 </Link>{" "}

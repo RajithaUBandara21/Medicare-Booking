@@ -4,9 +4,10 @@ import { formateDate } from '../../utils/formateDate'
 import { AiFillStar } from 'react-icons/ai'
 import FeedbackForm from './FeedbackForm'
 
-const Feedback = (reviews,totalRating) => (
+const Feedback = (reviews,totalRating) => {
 
   const [showFeedbackForm, setShowFeedbackForm] = React.useState(false);
+
   return (
     <div className="mb-[50px]">
       <h4 className="text-[20px] leading-[30px]  font-bold text-headingColor mb-[30px]">
@@ -15,7 +16,11 @@ const Feedback = (reviews,totalRating) => (
 
       {reviews?.map((reviews, index) => (
         <div key={index} className="flex justify-between gap-0=10 mb-[30px] ">
+
+
           <div className="flex gap-3">
+
+
             <figure className="w-10 h-10 rounded-full ">
               <img className="w-full " src={reviews.user?.photo} alt="avatar" />
             </figure>
@@ -32,15 +37,22 @@ const Feedback = (reviews,totalRating) => (
                 {reviews.reviewsText}
               </p>
             </div>
+
+
           </div>
 
           <div className="flex gap-1">
             {[...Array(reviews?.rating).keys()].map((_, index) => (
               <AiFillStar key={index} className="#0067ff" />
             ))}
+
           </div>
-        </div>;
-    ))}
+
+        </div>
+
+        
+
+       ))}
 
       {!showFeedbackForm && (
         <div className="text-center ">
@@ -52,6 +64,7 @@ const Feedback = (reviews,totalRating) => (
       )}
 
       {showFeedbackForm && <FeedbackForm />}
+
     </div>
   );
 }

@@ -1,7 +1,9 @@
-import React from 'react'
+
 import { formateDate } from '../../utils/formateDate';
 
-export const Appointments = (appointments) => {
+export const Appointments = ({ appointments }) => {
+
+  console.log(appointments,"appoinments")
   return (
     <table className="w-full text-left text-sm text-gray-500">
       <thead className="text-xs text-gray-700 uppercase bg-gray-50">

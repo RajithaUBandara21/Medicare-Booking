@@ -12,7 +12,7 @@ import  {Appointments}  from './Appointments.jsx'
 const Dashbord = () => {
 
 const {data,loading, error} = useGetProfile(`${BASE_URL}/doctors/profile/me`);
-console.log(data)
+
 
 const [tab ,setTab] = useState("overview")
 
@@ -68,7 +68,7 @@ const [tab ,setTab] = useState("overview")
                           {data.specialization}
                         </span>
                         <h3 className="text-[22px] leading-9 font-bold text-headingColor mt-3">
-                         {data.name}
+                          {data.name}
                         </h3>
 
                         <div className="flex items-center gap-[6px] ">
@@ -77,11 +77,11 @@ const [tab ,setTab] = useState("overview")
                             {data.averageRating}
                           </span>
                           <span className="text-textColor text-[14px] leading-5 lg:text-[16px] lg:leading-6 font-semibold">
-                          (  {data.totalRating} )
+                            ( {data.totalRating} )
                           </span>
                         </div>
                         <p className="text_para font-[15px] lg:max-w-[390px] leading-6 ">
-                       {data?.bio}
+                          {data?.bio}
                         </p>
                       </div>
                     </div>
@@ -90,13 +90,15 @@ const [tab ,setTab] = useState("overview")
                         name={data.name}
                         about={data.about}
                         qualifications={data.qualifications}
-                        experience={data.experience}
+                        experience={data.experiences}
                       />
                     </div>
                   </div>
                 )}
-                {tab === "appointments" && <Appointments appoinments={data.appointments} />}
-                {tab === "profile" && <Profile  doctorData = {data}/>}
+                {tab === "appointments" && (
+                  <Appointments appoinments={data.appointments} />
+                )}
+                {tab === "profile" && <Profile doctorData={data} />}
               </div>
             </div>
           </div>

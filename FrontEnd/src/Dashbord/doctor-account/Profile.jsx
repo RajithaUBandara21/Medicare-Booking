@@ -5,7 +5,9 @@ import {BASE_URL , token} from "./../../config.js";
 import {toast} from   "react-toastify";
 
 
-const Profile = ( doctorData) => {
+const Profile = (doctorData) => {
+  console.log(doctorData.doctorData.na);
+  // Form data
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -17,86 +19,79 @@ const Profile = ( doctorData) => {
     ticketPrice: 0,
     qualifications: [],
 
-    experience: [],
+    experiences: [],
     timeSlots: [],
     about: "",
     photo: null,
   });
 
   useEffect(() => {
-  setFormData({
-    name: doctorData.name,
-    email: doctorData.email,
-    phone:  doctorData.phone,
-    password:   doctorData.password,
-    bio:  doctorData.bio,
-    gender:   doctorData.gender,
-    specialization: doctorData.specialization,
-    ticketPrice:  doctorData.ticketPrice,
-    qualifications:   doctorData.qualifications,
+    setFormData({
+      name: doctorData.doctorData.name || "",
+      email: doctorData.doctorData.email || "",
+      phone: doctorData.doctorData.phone || "",
+      password: doctorData.doctorData.password || "",
+      bio: doctorData.doctorData.bio || "",
+      gender: doctorData.doctorData.gender || "",
+      specialization: doctorData.doctorData.specialization || "",
+      ticketPrice: doctorData.doctorData.ticketPrice || 0,
+      qualifications: doctorData.doctorData.qualifications || [],
 
-    experience:   doctorData.experience,
-    timeSlots:  doctorData.timeSlots,
-    about:  doctorData.about,
-    photo:  doctorData.photo,
+      experiences: doctorData.doctorData.experiences || [],
+      timeSlots: doctorData.doctorData.timeSlots || [],
+      about: doctorData.doctorData.about || "",
+      photo: doctorData.doctorData.photo || null,
+    });
+  }, [doctorData.doctorData]);
 
-
-
-  });  
-  
-  }, [doctorData]
-  )
+  // handel Inputs
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handelFileInputChange = async (e) => {
-
     const file = e.target.files[0];
     const data = await uploadImageToCloudinary(file);
 
-    setFormData({ ...formData,photo: data?.url})
-
-console.log(data);    
-
+    setFormData({ ...formData, photo: data?.url });
   };
+
+  // update data database
 
   const updateProfileHandeler = async (e) => {
     e.preventDefault();
 
-    try{
-      const res = await fetch (` ${BASE_URL}/doctors/${doctorData._id}` , {
+    try {
+      const res = await fetch(` ${BASE_URL}/doctors/${doctorData.doctorData._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
-
       });
 
       const result = await res.json();
-      if(!res.ok)
-      {
-        throw new Error(result.message);  
+      if (!res.ok) {
+        throw new Error(result.message);
       }
       toast.success("Profile Updated Successfully");
-
-    }catch (err){
+    } catch (err) {
       toast.error(err.message);
     }
-
-
   };
 
   // reuseable function to add item in array
   const addItem = (key, item) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [key]: [...prevFormData[key], item],
+      [key]: Array.isArray(prevFormData[key])
+        ? [...prevFormData[key], item]
+        : [item],
     }));
   };
+
   // reusable input change function
   const handleReusableChangeFunc = (key, event, index) => {
     const { name, value } = event.target;
@@ -110,17 +105,13 @@ console.log(data);
     });
   };
 
-// reusable function to delete item from array
-const deleteItem = (key,index)=>
-{
-  setFormData(prevFormData => ({
-    ... prevFormData,
-    [key]:prevFormData[key].filter((_, i)=> i !== index)
-  }))
-}
-
-
-
+  // reusable function to delete item from array
+  const deleteItem = (key, index) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [key]: prevFormData[key].filter((_, i) => i !== index),
+    }));
+  };
 
   const addQualification = (e) => {
     e.preventDefault();
@@ -139,16 +130,13 @@ const deleteItem = (key,index)=>
 
   const deleteQualification = (e, index) => {
     e.preventDefault();
-    deleteItem("qualification", index);
+    deleteItem("qualifications", index);
   };
-
-
-
 
   const addExperience = (e) => {
     e.preventDefault();
 
-    addItem("experience", {
+    addItem("experiences", {
       startingDate: "",
       endingDate: "",
       position: "",
@@ -157,22 +145,18 @@ const deleteItem = (key,index)=>
   };
 
   const handelExperienceChange = (event, index) => {
-    handleReusableChangeFunc("experience", event, index);
+    handleReusableChangeFunc("experiences", event, index);
   };
 
   const deleteExperience = (e, index) => {
     e.preventDefault();
-    deleteItem("experience", index);
+    deleteItem("experiences", index);
   };
-
-
-
-
 
   const addTimeSlot = (e) => {
     e.preventDefault();
 
-    addItem("timeSlot", {
+    addItem("timeSlots", {
       day: "",
       startingTime: "",
       endingTime: "",
@@ -180,23 +164,23 @@ const deleteItem = (key,index)=>
   };
 
   const handelTimeSlotChange = (event, index) => {
-    handleReusableChangeFunc("timeSlot", event, index);
+    handleReusableChangeFunc("timeSlots", event, index);
   };
 
   const deleteTimeSlot = (e, index) => {
     e.preventDefault();
-    deleteItem("timeSlot", index);
+    deleteItem("timeSlots", index);
   };
-
-
 
   return (
     <div>
+      
       <h2 className="text-headingColor font-bold text-[24px] leading-9 mb-10">
         Profile Information
       </h2>
 
       <form>
+        {/* name */}
         <div className="mb-5">
           <p className="form_lable">Name</p>
           <input
@@ -209,6 +193,8 @@ const deleteItem = (key,index)=>
           />
         </div>
 
+        {/* email */}
+
         <div className="mb-5">
           <p className="form_lable">Email</p>
           <input
@@ -220,10 +206,11 @@ const deleteItem = (key,index)=>
             placeholder="Email"
             readOnly
             aria-readonly
-            disabled="true"
+            disabled={true}
           />
         </div>
 
+        {/* phone */}
         <div className="mb-5">
           <p className="form_lable">Phone</p>
           <input
@@ -236,20 +223,22 @@ const deleteItem = (key,index)=>
           />
         </div>
 
+        {/* Bio */}
         <div className="mb-5">
           <p className="form_lable">Bio</p>
           <input
             type="text"
             name="bio"
-            value={formData.email}
+            value={formData.bio}
             onChange={handleInputChange}
             className="form_input"
             placeholder="Bio"
-            maxLength={100}
+            maxLength={500}
           />
         </div>
 
         <div className="mb-5">
+          {/* gender,specialization,ticket price */}
           <div className="grid grid-cols-3 gap-5 mb-[30px]">
             {/* gender */}
             <div>
@@ -300,10 +289,10 @@ const deleteItem = (key,index)=>
             </div>
           </div>
 
-          {/* Qualification */}
+          {/* qualification */}
           <div className="mb-5 ">
-            {/*Expereance */}
             <p className="form_label ">Qualifications*</p>
+            {/* Qualification array map function */}
             {formData.qualifications?.map((item, index) => (
               <div key={index}>
                 <div>
@@ -357,22 +346,30 @@ const deleteItem = (key,index)=>
                     </div>
                   </div>
 
-                  <button  onClick={e => deleteQualification(e ,index)} className="bg-red-600 p-2 rounded-full text-white text-[18px] mt-2 mb-[30px] cursor-pointer">
+                  <button
+                    onClick={(e) => deleteQualification(e, index)}
+                    className="bg-red-600 p-2 rounded-full text-white text-[18px] mt-2 mb-[30px] cursor-pointer"
+                  >
                     <AiOutlineDelete />
                   </button>
                 </div>
               </div>
             ))}
 
-            <button className="bg-[#000] py-2 px-2 rounded text-white h-fit cursor-pointer">
+            {/* Add qualification button */}
+            <button
+              onClick={addQualification}
+              className="bg-[#000] py-2 px-2 rounded text-white h-fit cursor-pointer"
+            >
               Add Qualification
             </button>
           </div>
 
           {/* Experience */}
+          {/* map function and button */}
           <div className="mb-5 ">
-            <p className="form_label ">Experience*</p>
-            {formData.experience?.map((item, index) => (
+            <p className="form_label ">experiences*</p>
+            {formData.experiences?.map((item, index) => (
               <div key={index}>
                 <div>
                   <div className="grid grid-cols-2 gap-5 ">
@@ -404,7 +401,7 @@ const deleteItem = (key,index)=>
                       <input
                         type="text"
                         name="position"
-                        value={item.degree}
+                        value={item.position}
                         className="form_input"
                         onChange={(e) => handelExperienceChange(e, index)}
                       />
@@ -415,39 +412,31 @@ const deleteItem = (key,index)=>
                       <input
                         type="text"
                         name="hospital"
-                        value={item.university}
+                        value={item.hospital}
                         className="form_input"
                         onChange={(e) => handelExperienceChange(e, index)}
                       />
                     </div>
                   </div>
-                  <button onClick = {e => deleteExperience(e,index)} className="bg-red-600 p-2 rounded-full text-white text-[18px] mt-2 mb-[30px] cursor-pointer">
+                  <button
+                    onClick={(e) => deleteExperience(e, index)}
+                    className="bg-red-600 p-2 rounded-full text-white text-[18px] mt-2 mb-[30px] cursor-pointer"
+                  >
                     <AiOutlineDelete />
                   </button>
                 </div>
               </div>
             ))}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <button onClick={addExperience} className="bg-[#000] py-2 px-2 rounded text-white h-fit cursor-pointer">
-              Add Experience
+            <button
+              onClick={addExperience}
+              className="bg-[#000] py-2 px-2 rounded text-white h-fit cursor-pointer"
+            >
+              Add Experiencew
             </button>
           </div>
 
+          {/* time slots , map function and button */}
           <div className="mb-5 ">
             <p className="form_label ">Time Slots*</p>
             {formData.timeSlots?.map((item, index) => (
@@ -460,7 +449,7 @@ const deleteItem = (key,index)=>
                         name="day"
                         value={item.day}
                         className="form_input py-3.5"
-                        onChange = {e => handelTimeSlotChange(e,index)}
+                        onChange={(e) => handelTimeSlotChange(e, index)}
                       >
                         <option value="">Select</option>
                         <option value="saturDay">Select</option>
@@ -480,7 +469,7 @@ const deleteItem = (key,index)=>
                         name="startingTime"
                         value={item.startingTime}
                         className="form_input"
-                        onChange = {e => handelTimeSlotChange(e,index)}
+                        onChange={(e) => handelTimeSlotChange(e, index)}
                       />
                     </div>
 
@@ -491,13 +480,16 @@ const deleteItem = (key,index)=>
                         name="endingTime"
                         value={item.endingTime}
                         className="form_input"
-                        onChange = {e => handelTimeSlotChange(e,index)}
+                        onChange={(e) => handelTimeSlotChange(e, index)}
                       />
                     </div>
 
                     {/* deleat button */}
                     <div className="flex items-center">
-                      <button   onClick = {e => deleteTimeSlot(e,index)}  className="bg-red-600 p-2 rounded-full text-white text-[18px] mt-10 mb-[30px] cursor-pointer">
+                      <button
+                        onClick={(e) => deleteTimeSlot(e, index)}
+                        className="bg-red-600 p-2 rounded-full text-white text-[18px] mt-10 mb-[30px] cursor-pointer"
+                      >
                         <AiOutlineDelete />
                       </button>
                     </div>
@@ -505,11 +497,15 @@ const deleteItem = (key,index)=>
                 </div>
               </div>
             ))}
-            <button onClick={addTimeSlot} className="bg-[#000] py-2 px-2 rounded text-white h-fit cursor-pointer">
+            <button
+              onClick={addTimeSlot}
+              className="bg-[#000] py-2 px-2 rounded text-white h-fit cursor-pointer"
+            >
               Add Time Slot
             </button>
           </div>
 
+          {/* About section */}
           <div className="mb-5">
             <p className="form_label">About</p>
             <textarea
@@ -522,6 +518,7 @@ const deleteItem = (key,index)=>
             ></textarea>
           </div>
 
+          {/* imag display and change */}
           <div className="mb-5 flex items-center gap-3">
             {formData.photo && (
               <figure className="w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center">
@@ -532,7 +529,7 @@ const deleteItem = (key,index)=>
                 />
               </figure>
             )}
-
+            {/* image input */}
             <div className="relative w-[130px] h-[50px] ">
               <input
                 type="file"
@@ -550,6 +547,8 @@ const deleteItem = (key,index)=>
               </label>
             </div>
           </div>
+
+          {/* update profile button */}
           <div className="mt-7">
             <button
               type="submit"
