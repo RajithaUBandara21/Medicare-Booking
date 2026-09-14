@@ -7,6 +7,7 @@ import {
   getDoctorProfile,
 } from "../Controllers/doctorControler.js";
 import reviewRouter from "./review.js";
+import bookingRouter from "./booking.js";
 
 
 import {
@@ -19,6 +20,7 @@ const router = express.Router();
 
 //nested routes
 router.use("/:doctorId/reviews", reviewRouter);
+router.use("/:doctorId/bookings", bookingRouter);
 
 router.get('/', getAllDoctors);
 router.get('/:id', getSingleDoctor);

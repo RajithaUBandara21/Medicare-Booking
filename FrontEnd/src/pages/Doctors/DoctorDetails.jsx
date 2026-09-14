@@ -8,12 +8,13 @@ import useFetchData from "./../../hooks/useFetchData"
 import Loader from "../../component/Loader/Loading"
 import Error from "../../component/Error/Error"
 import { useParams } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useState } from 'react'
 
 const DoctorDetails = () => {
 
+  const { id } = useParams();
 
-  const [tab, setTab] = useEffect("about");
+  const [tab, setTab] = useState("about");
 
   const {
     data: doctor,
@@ -27,7 +28,7 @@ const DoctorDetails = () => {
 
     qualifications,
     experience,
-    timeSlot,
+    timeSlots,
     reviews,
     bio,
     about,
@@ -38,8 +39,6 @@ const DoctorDetails = () => {
     photo,
   } = doctor;
 
-  const { id } = useParams();
-
 
 
 
@@ -48,11 +47,10 @@ const DoctorDetails = () => {
   return (
     <section>
       <div className="container">
-        {!loading && error && (
+        {loading && !error && <Loader />}
+        {error && !loading && <Error />}
+        {!loading && !error && (
           <div className="max-w-[1170px] px-5 mx-auto">
-            {loading && <Loader />}
-            {error && <Error />}
-
             <div className="grid md:grid-cols-3 gap-[50px] ">
               <div className="md:col-span-2">
                 <div className="flex items-center gap-5">
@@ -124,7 +122,7 @@ const DoctorDetails = () => {
               <div>
                 <SidePanel doctorId = {doctor._id}
                 ticketPrice = {ticketPrice}
-                timeSlots = {timeSlot} />
+                timeSlots = {timeSlots} />
               </div>
             </div>
           </div>

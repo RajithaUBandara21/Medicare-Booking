@@ -106,7 +106,7 @@ export const deleteUser = async (req, res) => {
 
 
 
-      const doctorIds = booking.map((book) => book.doctor.id)
+      const doctorIds = booking.map((book) => book.doctor.toString())
     
       const doctors = await Doctors.find({_id: {$in: doctorIds}}).select("-password") 
      
