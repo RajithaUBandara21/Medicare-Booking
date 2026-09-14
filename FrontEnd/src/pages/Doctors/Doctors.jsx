@@ -31,7 +31,7 @@ const Doctors = () => {
     data: doctors,
     loading,
     error,
-  } = useFetchData(`${BASE_URL}/doctors?query=${query}`);
+  } = useFetchData(`${BASE_URL}/doctors?query=${debounceQuery}`);
   return (
     <>
       <section className="bg-[#fff9ea]">
@@ -60,10 +60,10 @@ const Doctors = () => {
           {loading && <Loader />}
           {error && <Error />}
 
-          {!loading && error && (
+          {!loading && !error && (
             <div className="grid grid-cols-1 px-[50px] md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-[30px]  ">
               {doctors.map((doctor) => (
-                <DoctorCard key={doctor.id} doctor={doctor} />
+                <DoctorCard key={doctor._id} doctor={doctor} />
               ))}
             </div>
           )}

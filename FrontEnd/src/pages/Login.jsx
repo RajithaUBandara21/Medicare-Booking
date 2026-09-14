@@ -29,7 +29,7 @@ const Login = () => {
     setLoading(true);
   
     try{
-      const res = await  fetch("http://localhost:5000/api/v1/auth/login",
+      const res = await  fetch(`${BASE_URL}/auth/login`,
       {
         method:'post',
         headers:{
@@ -51,7 +51,8 @@ const Login = () => {
       {
         type:"LOGIN_SUCCESS",
         payload:{
-          user:result.user,
+          // login's response carries the user document under "data", not "user"
+          user:result.data,
           token:result.token,
           role:result.role,
         }

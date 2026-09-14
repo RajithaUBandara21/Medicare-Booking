@@ -3,10 +3,10 @@ import starIcon from '../../assets/images/Star.png'
 import { BsArrowRight } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 
-const DoctorCard = ( doctor) => {
+const DoctorCard = ( {doctor} ) => {
   const {
-name,avgRating,totalRating,photo,specialization,experiences
-    
+name,averageRating,totalRating,photo,specialization,experiences
+
   }=doctor;
   return (
     <div className="p-3 lg:p-5">
@@ -25,7 +25,7 @@ name,avgRating,totalRating,photo,specialization,experiences
           <div className="flex items-center gap-[6px] ">
             <span className="flex items-center gap-[6px] text-[14px] leading-6 lg:text-[16px] lg:leading-7 font-semibold text-headingColor">
               <img src={starIcon} alt="" />
-              {avgRating}
+              {averageRating}
             </span>
             <span className="text-[14px] leading-6 lg:text-[16px] lg:leading-7  font-[400]  text-textColor">
               {totalRating}{" "}

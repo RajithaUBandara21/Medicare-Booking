@@ -3,3 +3,6 @@
 .claude/
 blueprint/
 CLAUDE.md
+
+# Local secrets - never commit live credentials
+atlas-credentials.env

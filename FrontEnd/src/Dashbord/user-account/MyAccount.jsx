@@ -29,7 +29,7 @@ const MyAccount = () => {
       <div className="max-w-[1170px] mx-auto">
 {loading && !error && <Loading/>}
 
-{error && !error && <Error errMessage={error}/>}
+{!loading && error && <Error errMessage={error}/>}
 
        {!loading && !error &&(
 

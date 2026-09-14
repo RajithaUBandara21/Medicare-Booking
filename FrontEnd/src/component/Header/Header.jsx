@@ -30,25 +30,25 @@ const navLinks = [
   },
 ];
 
-const type = localStorage.getItem('role');
-
-
 const  Header = ()=> {
 
-
-
-  const {
-    data: userData,
-    loading,
-    error,
-  } =  useFetchData(`${BASE_URL}/${type}s/profile/me`);
-
-  // console.log(userData)
-
-  
 const headerRef= useRef(null);
 const menuRef= useRef(null);
 const {user,role,token} = useContext(authContext);
+
+// doctors live under /doctors, patients under /users - role doesn't pluralize
+// into the right route prefix, so map it explicitly. Skip the fetch entirely
+// when logged out instead of hitting a route that can't exist for either role.
+let profileRoute = null;
+if (role === "doctor") {
+  profileRoute = "doctors";
+} else if (role === "patient") {
+  profileRoute = "users";
+}
+
+const {
+  data: userData,
+} =  useFetchData(token && profileRoute ? `${BASE_URL}/${profileRoute}/profile/me` : null);
 
 
 

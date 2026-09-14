@@ -52,10 +52,12 @@ reviewSchema.pre(/^find/, function (next) {
     ]);
 
 
-    await Doctor.findByIdAndUpdate(doctorId, {
-      totalRating:status[0].numOfRating,
-      averageRating:status[0].avgRating,
-    });
+    if (stats.length > 0) {
+      await Doctor.findByIdAndUpdate(doctorId, {
+        totalRating: stats[0].numOfRating,
+        averageRating: stats[0].avgRating,
+      });
+    }
 
   };
 

@@ -25,7 +25,7 @@ const {name,desc,bgColor,textColor} =item;
           <BsArrowRight className="group-hover:text-white w-6 h-5" />
         </Link>
         
-        <span  className='w-[40px] h-[44px] flex items-center justify-center text-[18px] leading-[30px] font-[600] ' style={{backgroundColor:`${bgColor}` ,color:`${textColor}`,borderRadius:'6 0 0 6 px'}}>
+        <span  className='w-[40px] h-[44px] flex items-center justify-center text-[18px] leading-[30px] font-[600] ' style={{backgroundColor:`${bgColor}` ,color:`${textColor}`,borderRadius:'6px 0 0 6px'}}>
           {index+1}
         </span>
 

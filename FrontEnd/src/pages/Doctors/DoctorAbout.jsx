@@ -4,7 +4,6 @@ import SidePanel from './SidePanel';
 
 const DoctorAbout = ({name,about,qualifications,experience} ) => {
 
-  console.log(experience)
   return (
     <div className=" ">
       <div>

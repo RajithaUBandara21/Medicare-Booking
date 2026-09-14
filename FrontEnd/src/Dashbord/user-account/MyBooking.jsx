@@ -11,7 +11,7 @@ const MyBooking =  () => {
     data: appointments,
     loading,
     error,
-  } =   useFetchData(`http://localhost:5000/api/v1/users/appointments/my-appointments`);
+  } =   useFetchData(`${BASE_URL}/users/appointments/my-appointments`);
 
 
 

@@ -29,7 +29,7 @@ export const register = async (req, res) => {
     // check user exists
 
     if (user) {
-      return res.status(400).json({ msg: "The user already exists" });
+      return res.status(400).json({ success: false, message: "The user already exists" });
     }
     // hash password
 
@@ -62,12 +62,12 @@ export const register = async (req, res) => {
 
    
    
-    res.status(200).json({success:true, msg: "User is registered" });
+    res.status(200).json({success:true, message: "User is registered" });
 
 
 
   } catch (err) {
-    res.status(500).json({ msg: "user register error" , success:false});
+    res.status(500).json({ message: "user register error" , success:false});
   }
 };
 
@@ -89,14 +89,14 @@ export const register = async (req, res) => {
 
       //user exist or not
       if (!user) {
-        return res.status(400).json({ msg: "User does not exist" });
+        return res.status(400).json({ success: false, message: "User does not exist" });
       }
       // check password
 
       const isPasswordMatch = await bcrypt.compare(req.body.password, user.password);
 
       if (!isPasswordMatch) {
-        return res.status(400).json({ msg: "Incorrect password" });
+        return res.status(400).json({ success: false, message: "Incorrect password" });
       }
 
       // get token
@@ -107,14 +107,14 @@ export const register = async (req, res) => {
       res
         .status(200)
         .json({
-          status: true,
+          success: true,
           message: "User is logged in",
           token,
           data: { ...rest },
           role,
         });
     } catch (err) {
-      res.status(500).json({ msg: "User login error" });
-   
+      res.status(500).json({ success: false, message: "User login error" });
+
     }
   };

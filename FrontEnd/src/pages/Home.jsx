@@ -251,7 +251,6 @@ const Home = () => {
                       <h4 className="text-[10px] leading-3 lg:text-[16px] lg:leading-[22px] font-[700] text-headingColor">
                         Bru bru
                       </h4>
-                      '
                     </div>
                   </div>
                 </div>

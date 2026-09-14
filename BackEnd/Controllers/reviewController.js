@@ -26,7 +26,9 @@ export const  getAllReviews = async (req, res) => {
 
         }
         if (!req.body.user){
-            req.body.user = req.params.userId
+            // reviews nest only under :doctorId - there's no :userId route param,
+            // so the author has to come from the verified JWT, not the request.
+            req.body.user = req.userId
 
         }
         const newReview = new Review(req.body)

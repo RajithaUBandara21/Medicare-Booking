@@ -3,7 +3,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import uploadImageToCloudinary from '../../utils/uploadCloudinary'
-import {BASE_URL , token} from '../../config'
+import {BASE_URL} from '../../config'
 import { toast } from 'react-toastify';
 import HashLoader from 'react-spinners/HashLoader'
 
@@ -26,7 +26,7 @@ const Profile = ( {user}) => {
 
  const navigate = useNavigate();
  useEffect(() => {
-  setFromData({name:user.name,email:user.email,bloodType:user.bloodType,photo:user.photo, gender:user.gender})}
+  setFromData({name:user.name,email:user.email,password:"",bloodType:user.bloodType,photo:user.photo, gender:user.gender})}
 
   , [user])
 
@@ -56,7 +56,7 @@ const submitHandler = async event=>{
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify(fromData),
     });
@@ -112,13 +112,12 @@ const submitHandler = async event=>{
                 <div className="mb-5">
                   <input
                     type="password"
-                    placeholder=" Password"
+                    placeholder="Leave blank to keep current password"
                     name="password"
                     value={fromData.password}
                     onChange={handeleInputChange}
                     className="w-full pr-4  py-3 border-b border-solid border-[#0066ff61] focus:outline-none
           focus:border-b-primaryColor focus:shadow-xl  text-[22px] leading-7 text-headingColor placeholder:text-textColor round-md cursor-pointer"
-              
                   />
                 </div>
 
@@ -149,7 +148,7 @@ const submitHandler = async event=>{
                       onChange={handeleInputChange}
                       className="text-textColor font-semibold text-[15px] leading-7 px-4 py-3 focus:outline-none"
                     >
-                      <option value="patient">Male</option>
+                      <option value="male">Male</option>
                       <option value="female">Female</option>
                       <option value="other">Other</option>
                     </select>
@@ -157,7 +156,7 @@ const submitHandler = async event=>{
                 </div>
 
                 <div className="mb-5 flex item-center gap-3">
-                  {FormData.photo && (
+                  {fromData.photo && (
                     <figure className="w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center">
                       <img
                         src={fromData.photo}

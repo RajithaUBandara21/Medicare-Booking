@@ -12,7 +12,7 @@ export const authenticate = async (req, res, next) => {
   if (!authToken) {
     return res
       .status(401)
-      .json({ success: false, msg: "No token, authorization denied" });
+      .json({ success: false, message: "No token, authorization denied" });
   }
   try {
     const token = authToken.split(" ")[1];
@@ -27,10 +27,10 @@ export const authenticate = async (req, res, next) => {
     next();
   } catch (err) {
     if(err.name == "TokenExpiredError"){
-        return res.status(401).json({ success: false, msg: "Token Expired" });
+        return res.status(401).json({ success: false, message: "Token Expired" });
     }
 
-    return res.status(401).json({ success: false, msg: "Invalid Token"});
+    return res.status(401).json({ success: false, message: "Invalid Token"});
     }
   
 };
@@ -49,7 +49,7 @@ export const restrict = roles => async (req, res, next) => {
     user = doctor;
   }
   if(!roles.includes(req.role)){
-    return res.status(403).json({ success: false, msg: "You are not authorized to access this route" });
+    return res.status(403).json({ success: false, message: "You are not authorized to access this route" });
   }
 
   next();

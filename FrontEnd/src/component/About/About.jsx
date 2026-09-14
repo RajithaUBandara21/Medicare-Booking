@@ -23,7 +23,7 @@ const about = () => {
               excellent care and making sure you have a positive experience.
             </p>
             <p className="text_para mt-[30px] ">
-              k We are committed to providing quality, patient-centered care
+              We are committed to providing quality, patient-centered care
               with compassion and respect. We are committed to providing you
               with excellent care and making sure you have a positive
               experience.

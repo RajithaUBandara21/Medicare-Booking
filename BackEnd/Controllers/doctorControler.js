@@ -1,15 +1,31 @@
 import Doctor from "../models/DoctorSchema.js"
 import Booking from "../models/BookingSchema.js"
+import bcrypt from "bcryptjs"
 
 export const UpdateDoctor = async (req, res) => {
   const id = req.params.id;
+  const { password, ...updateData } = req.body;
+
+  // restrict(["doctor"]) only checks role - without this, any authenticated
+  // doctor could edit another doctor's record (including their password) by id.
+  if (req.userId !== id) {
+    return res.status(403).json({ success: false, message: "You can only update your own profile" });
+  }
 
   try {
+    // the edit-profile form always submits a password field, blank unless the
+    // doctor deliberately typed a new one - only touch the hash when it isn't blank,
+    // otherwise every profile save wipes it out and locks the account out of login.
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      updateData.password = await bcrypt.hash(password, salt);
+    }
+
     const updateDoctor = await Doctor.findByIdAndUpdate(
       id,
-      { $set: req.body },
+      { $set: updateData },
       { new: true }
-    );
+    ).select("-password");
 
     res.status(200).json({
       success: true,
@@ -23,7 +39,12 @@ export const UpdateDoctor = async (req, res) => {
 
 export const deleteDoctor = async (req, res) => {
     const id = req.params.id;
-  
+
+    // same ownership gap as UpdateDoctor - role alone doesn't prove it's their own account
+    if (req.userId !== id) {
+      return res.status(403).json({ success: false, message: "You can only delete your own account" });
+    }
+
     try {
       await Doctor.findByIdAndDelete(
         id,
@@ -101,8 +122,6 @@ export const deleteDoctor = async (req, res) => {
 
     const doctorId = req.userId;
 
-    console.log("id" ,doctorId);
-
     try {
       const doctor = await Doctor.findById(doctorId);
 
@@ -110,11 +129,13 @@ export const deleteDoctor = async (req, res) => {
         return res.status(404).json({ message: "Doctor not found" });
       }
       const { password, ...others } = doctor._doc;
-      const appointments = await Booking.find({ doctor: doctorId });
+      // Appointments.jsx renders item.user.name/email/photo/gender - without
+      // populating it's just a raw ObjectId string, so the patient info never shows.
+      const appointments = await Booking.find({ doctor: doctorId }).populate("user", "-password");
       res
         .status(200)
         .json({
-          success: false,
+          success: true,
           message: " profile info is geting",
           data: { ...others ,appointments},
         });

@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import {AiOutlineDelete} from "react-icons/ai";
 import uploadImageToCloudinary from "./../../utils/uploadCloudinary.js";
-import {BASE_URL , token} from "./../../config.js";
+import {BASE_URL} from "./../../config.js";
 import {toast} from   "react-toastify";
 
 
 const Profile = (doctorData) => {
-  console.log(doctorData.doctorData.na);
   // Form data
   const [formData, setFormData] = useState({
     name: "",
@@ -67,7 +66,7 @@ const Profile = (doctorData) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         body: JSON.stringify(formData),
       });

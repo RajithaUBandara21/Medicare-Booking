@@ -96,7 +96,7 @@ const [tab ,setTab] = useState("overview")
                   </div>
                 )}
                 {tab === "appointments" && (
-                  <Appointments appoinments={data.appointments} />
+                  <Appointments appointments={data.appointments} />
                 )}
                 {tab === "profile" && <Profile doctorData={data} />}
               </div>

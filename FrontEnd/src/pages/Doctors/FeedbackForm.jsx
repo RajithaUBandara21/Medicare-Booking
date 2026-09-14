@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { AiFillStar } from 'react-icons/ai';
 import {useParams} from "react-router-dom"
-import {BASE_URL,token} from "../../config"
+import {BASE_URL} from "../../config"
 import {toast} from 'react-toastify'
 import HashLoader from 'react-spinners/HashLoader'
  
@@ -19,17 +19,17 @@ const FeedbackForm = () => {
     try {
       if (!rating || !reviewText) {
         setLoading(false);
-       return  toString.error("rating and review fields are required");
+       return  toast.error("rating and review fields are required");
 
-       
+
       }
 
 
       const res = await fetch(`${BASE_URL}/doctors/${id}/reviews`, {
         method: "post",
         headers: {
-          "Content-Type": "application/jason",
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         body: JSON.stringify({ rating, reviewText }),
       });
