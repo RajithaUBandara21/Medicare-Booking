@@ -2,11 +2,14 @@
   "name": "backend",
   "version": "1.0.0",
   "type":"module",
-  "main": "index.js",
+  "main": "server.js",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "start-dev": "nodemon index.js"
+    "start": "node server.js",
+    "start-dev": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",

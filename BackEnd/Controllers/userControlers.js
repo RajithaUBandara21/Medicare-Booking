@@ -1,5 +1,5 @@
 import User from "../models/UserSchema.js"
-import Booking from "../models/bookingSchema.js"
+import Booking from "../models/BookingSchema.js"
 import Doctors from "../models/DoctorSchema.js"
 import bcrypt from "bcryptjs"
 
