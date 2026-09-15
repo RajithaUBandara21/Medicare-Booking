@@ -12,7 +12,6 @@ import reviewRoute from './Routers/review.js';
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 5000;
 
 const corsOptions = {
     origin:true,
@@ -48,12 +47,11 @@ app.use('/api/v1/users', userRoute);
 app.use('/api/v1/doctors', doctorRoute);
 app.use('/api/v1/reviews', reviewRoute);
 
+// Connect at module load (not inside a listen callback) so both the local
+// server and the Vercel serverless entry point trigger it on startup.
+// Mongoose buffers queries until connected, so requests that arrive first
+// don't need to wait on this explicitly.
+connectDB();
 
-
-app.listen(port, () => {
-    connectDB();
-    console.log(`Server is running on port: ${port}`);
-});
-
-
+export default app;
 
