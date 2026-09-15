@@ -15,7 +15,7 @@ test.beforeEach(async ({ page }, testInfo) => {
   testInfo.issues = issues;
 });
 
-test.afterEach(async (_fixtures, testInfo) => {
+test.afterEach(async ({}, testInfo) => {
   if (testInfo.issues?.length) {
     console.log(`\n--- console/page issues during "${testInfo.title}" ---`);
     for (const i of testInfo.issues) console.log(i);
@@ -134,9 +134,10 @@ test('doctor dashboard - overview, appointments, profile tabs', async ({ page })
   await expect(page.getByRole('heading', { name: 'Dr Demo', exact: true })).toBeVisible();
 
   await page.getByRole('button', { name: 'Appointments' }).click();
-  // this is the Booking.user populate fix - was blank before
-  await expect(page.getByText('Demo Patient')).toBeVisible();
-  await expect(page.getByText('demo.patient@example.com')).toBeVisible();
+  // this is the Booking.user populate fix - was blank before. .first() because
+  // the shared demo account accumulates real bookings across runs/sessions.
+  await expect(page.getByText('Demo Patient').first()).toBeVisible();
+  await expect(page.getByText('demo.patient@example.com').first()).toBeVisible();
 
   await page.getByRole('button', { name: 'Profile' }).click();
   await expect(page.getByPlaceholder(/full name/i)).toHaveValue('Dr Demo');

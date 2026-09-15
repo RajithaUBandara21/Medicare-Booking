@@ -57,6 +57,10 @@ tooling) - `cd` into the app before running its scripts.
 - Build: `npm run build`
 - Preview production build: `npm run preview`
 - Lint: `npm run lint`
+- Browser tests: `npm run test:browser` (from `FrontEnd/`; Playwright against
+  `localhost:5173` - requires the BackEnd dev server running on `:5000` and
+  network access to the MongoDB Atlas demo accounts seeded for
+  `FrontEnd/e2e/smoke.spec.js`)
 - Requires `FrontEnd/.env` for Cloudinary uploads (see
   `FrontEnd/.env.example`): `VITE_CLOUD_NAME`, `VITE_UPLOAD_PRESET_NAME`
 
